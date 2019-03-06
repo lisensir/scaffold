@@ -18,7 +18,9 @@
 
 	<modules>
 		<module>scaffold-sorm</module>
+		<module>scaffold-commons</module>
 	</modules>
+
 
 	<build>
 		<plugins>
@@ -41,7 +43,7 @@
 	</build>
 
 
-	<distributionManagement>
+	<!--<distributionManagement>
 		<repository>
 			<id>releases</id>
 			<name>nexus releases</name>
@@ -54,6 +56,6 @@
 			<url>http://172.16.1.232:8081/nexus/content/repositories/snapshots/</url>
 			<uniqueVersion>true</uniqueVersion>
 		</snapshotRepository>
-	</distributionManagement>
+	</distributionManagement>-->
 
 </project>
