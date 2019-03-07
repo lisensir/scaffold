@@ -4,6 +4,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,8 +12,12 @@ import java.util.logging.Logger;
 public class AESECB {
 
     private static final String KEY_ALGORITHM = "AES";
-    private static final String DEFAULT_CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";
+    private static final String DEFAULT_CIPHER_ALGORITHM = "AES/ECB/PKCS7Padding";
     public static final String SALT = "paichat";
+
+   static {
+        Security.addProvider(BouncyCastleProviderFactory.getInstance());
+    }
 
     /**
      * AES 加密操作

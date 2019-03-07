@@ -10,13 +10,13 @@ public class AESCBC {
 
     private static final String KEY = "zhuguang@ewallet";//key，加密的key
     private static final String IV_PARAMETER = "2SGw2Fo5tYAbNY/d";//偏移量,4*4矩阵
-    private static final String CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";
+    private static final String CIPHER_ALGORITHM = "AES/CBC/PKCS7Padding";
     private static final String KEY_ALGORITHM = "AES";
     private static final String CHARSET_ENCODING = "utf-8";
 
     static {
         Security.addProvider(
-                new org.bouncycastle.jce.provider.BouncyCastleProvider()
+                BouncyCastleProviderFactory.getInstance()
         );
     }
 
@@ -29,7 +29,6 @@ public class AESCBC {
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
             byte[] encrypted = cipher.doFinal(sSrc.getBytes("utf-8"));
             return new String(Base64.getEncoder().encode(encrypted));
-            //return new BASE64Encoder().encode(encrypted).replaceAll("\r|\n", "");// 此处使用BASE64做转码。
         }catch(Exception e) {
             e.printStackTrace();
             return null;
@@ -44,7 +43,6 @@ public class AESCBC {
             Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
             IvParameterSpec iv = new IvParameterSpec(IV_PARAMETER.getBytes());
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
-            //byte[] encrypted1 = new BASE64Decoder().decodeBuffer(sSrc);// 先用base64解密
             byte[] encrypted1 = Base64.getDecoder().decode(sSrc);
             byte[] original = cipher.doFinal(encrypted1);
             return new String(original, CHARSET_ENCODING);
