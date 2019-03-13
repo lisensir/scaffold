@@ -129,5 +129,9 @@ public class AESCBC {
 
         String ddddd = "{\"payPassword\":\"det$3233r22\",\"countryCode\":\"88\",\"name\":\"展示\",\"idenType\":\"1\",\"idenCode\":\"328324198910227234\",\"uid\":\"uid0002\"}";
         System.out.println("--- ddddd = " + AESCBC.encrypt(ddddd));
+
+        String js = "+VhRA7f3y5soA6tPW0EYPuqhxZj7i3a3S+jgk1/9OQM=";
+        System.out.println("js encrypt = " + AESCBC.decrypt(js));
     }
+
 }
