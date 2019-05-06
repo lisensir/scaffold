@@ -30,14 +30,14 @@ public class NumberUtil {
      * @param scale 精度
      * @return Double
      */
-    public static Double round(Number num, int scale) {
+    public static Number round(Number num, int scale) {
         if (scale < 0) {
             throw new IllegalArgumentException("指定的数据精度要大于0");
         }
 
         BigDecimal b = new BigDecimal(num.doubleValue());
         b.setScale(scale, ROUND_MODEL);
-        return b.doubleValue();
+        return b;
     }
 
 
@@ -46,10 +46,10 @@ public class NumberUtil {
      *
      * @param num 操作数
      */
-    public static Double round(Number num) {
+    public static Number round(Number num) {
         BigDecimal b = new BigDecimal(num.doubleValue());
         b.setScale(SCALE, ROUND_MODEL);
-        return b.doubleValue();
+        return b;
     }
 
     /**
@@ -101,13 +101,13 @@ public class NumberUtil {
      * @param scale   精度
      * @return Double
      */
-    public static Double add(Number addend1, Number addend2, int scale) {
+    public static Number add(Number addend1, Number addend2, int scale) {
         Objects.requireNonNull(addend1, "加数不能为空");
         Objects.requireNonNull(addend2, "加数不能为空");
         BigDecimal first = BigDecimal.valueOf(addend1.doubleValue());
         BigDecimal second = BigDecimal.valueOf(addend2.doubleValue());
 
-        return first.add(second).setScale(scale, ROUND_MODEL).doubleValue();
+        return first.add(second).setScale(scale, ROUND_MODEL);
     }
 
     /**
@@ -115,9 +115,9 @@ public class NumberUtil {
      * @param num 操作数
      * @return double
      */
-    public static Double abs(Number num) {
+    public static Number abs(Number num) {
         BigDecimal n = BigDecimal.valueOf(num.doubleValue());
-        return n.abs().doubleValue();
+        return n.abs();
     }
 
     /**
@@ -127,7 +127,7 @@ public class NumberUtil {
      * @param addend2 加数2
      * @return Double
      */
-    public static Double add(Number addend1, Number addend2) {
+    public static Number add(Number addend1, Number addend2) {
         return add(addend1, addend2, SCALE);
     }
 
@@ -140,14 +140,14 @@ public class NumberUtil {
      * @param scale      精度
      * @return Double
      */
-    public static Double subtract(Number minuend, Number subtractor, int scale) {
+    public static Number subtract(Number minuend, Number subtractor, int scale) {
         Objects.requireNonNull(minuend, "被减数不能为空");
         Objects.requireNonNull(subtractor, "减数不能为空");
 
         BigDecimal num1 = BigDecimal.valueOf(minuend.doubleValue());
         BigDecimal num2 = BigDecimal.valueOf(subtractor.doubleValue());
 
-        return num1.subtract(num2).setScale(scale, ROUND_MODEL).doubleValue();
+        return num1.subtract(num2).setScale(scale, ROUND_MODEL);
     }
 
 
@@ -158,7 +158,7 @@ public class NumberUtil {
      * @param subtractor 减数
      * @return Double
      */
-    public static Double subtract(Number minuend, Number subtractor) {
+    public static Number subtract(Number minuend, Number subtractor) {
         return subtract(minuend, subtractor, SCALE);
     }
 
@@ -169,10 +169,10 @@ public class NumberUtil {
      * @param num 操作数
      * @return Double
      */
-    public static Double minus(Number num) {
+    public static Number minus(Number num) {
         if (num == null) return null;
         BigDecimal n = BigDecimal.valueOf(num.doubleValue());
-        return n.multiply(new BigDecimal("-1")).doubleValue();
+        return n.multiply(new BigDecimal("-1"));
     }
 
 
@@ -184,14 +184,14 @@ public class NumberUtil {
      * @param scale 精度
      * @return Double
      */
-    public static Double multiply(Number num1, Number num2, int scale) {
+    public static Number multiply(Number num1, Number num2, int scale) {
         Objects.requireNonNull(num1, "乘数不能为空");
         Objects.requireNonNull(num2, "乘数不能为空");
 
         BigDecimal n = BigDecimal.valueOf(num1.doubleValue());
         BigDecimal n2 = BigDecimal.valueOf(num2.doubleValue());
 
-        return n.multiply(n2).setScale(scale, ROUND_MODEL).doubleValue();
+        return n.multiply(n2).setScale(scale, ROUND_MODEL);
     }
 
 
@@ -202,7 +202,7 @@ public class NumberUtil {
      * @param num2 乘数
      * @return Double
      */
-    public static Double multiply(Number num1, Number num2) {
+    public static Number multiply(Number num1, Number num2) {
         return multiply(num1, num2, SCALE);
     }
 
@@ -215,14 +215,14 @@ public class NumberUtil {
      * @param scale 精度
      * @return Double
      */
-    public static Double divide(Number num1, Number num2, int scale) {
+    public static Number divide(Number num1, Number num2, int scale) {
         Objects.requireNonNull(num1, "被除数不能为空");
         Objects.requireNonNull(num2, "除数不能为空");
 
         BigDecimal n1 = BigDecimal.valueOf(num1.doubleValue());
         BigDecimal n2 = BigDecimal.valueOf(num2.doubleValue());
 
-        return n1.divide(n2, scale, ROUND_MODEL).doubleValue();
+        return n1.divide(n2, scale, ROUND_MODEL);
     }
 
 
@@ -233,16 +233,19 @@ public class NumberUtil {
      * @param num2 除数
      * @return Double
      */
-    public static Double divide(Number num1, Number num2) {
+    public static Number divide(Number num1, Number num2) {
         return divide(num1, num2, SCALE);
     }
 
 
     public static int getScale(Number number) {
         Objects.requireNonNull(number, "参数不能为空");
+        BigDecimal bb = new BigDecimal(number.toString());
         int s = new BigDecimal(number.toString()).scale();
-        return number instanceof Double && s > 5 ? s - 1 : s;
+        //return number instanceof Double && s > 5 ? s - 1 : s;
+        return s;
     }
+
 
     /**
      * 对字符串表示的数值格式化的指定精度，小数位多余的直接截取。
@@ -250,7 +253,7 @@ public class NumberUtil {
      * @param precision 指定的数据精度
      * @return double
      */
-    public static double formatToPrecision(String strNum, int precision) {
+    public static Number formatToPrecision(String strNum, int precision) {
         String tmp = strNum;
         if(tmp.indexOf(".") > 0) {
             int bindx = tmp.indexOf(".");
@@ -265,8 +268,22 @@ public class NumberUtil {
         Double d = 23.434D;
         System.out.println("---- minus = " + NumberUtil.minus(d));
 
+        Double f1 = 0.0003232;
+        Double f2 = 0.0000009;
+        Double f3 = 0.0001;
+
+        System.out.println("## f1 scale = " + NumberUtil.getScale(f2));
+        System.out.println("##1 f2 scale = " + NumberUtil.getScale(f2));
+        System.out.println("##1 f3 scale = " + NumberUtil.getScale(f3));
+        BigDecimal bi = new BigDecimal("0.0000009");
+        BigDecimal fi = new BigDecimal("0.0001");
+        System.out.println("##2 f2 scale = " + NumberUtil.getScale(bi));
+        System.out.println("##2 f3 scale = " + NumberUtil.getScale(fi));
+        Double f4 = NumberUtil.add(f1,f2,NumberUtil.getScale(f2)).doubleValue();
+        System.out.println("---- f4 " + f4);
+
         //double dd = 0.00001;
-        double dd = 324.001;
+        /*double dd = 324.001;
         System.out.println("---- scale = " + NumberUtil.getScale(dd));
 
         BigDecimal db = BigDecimal.TEN.pow(NumberUtil.getScale(dd) > 4 ? NumberUtil.getScale(dd) - 1 : NumberUtil.getScale(dd));
@@ -319,7 +336,7 @@ public class NumberUtil {
         System.out.println("---- format2 " + NumberUtil.format(format2, 6));
 
         Double format3 = Double.parseDouble("0.876534");
-        System.out.println("---- format3 " + format3.toString());
+        System.out.println("---- format3 " + format3.toString());*/
     }
 
 }
